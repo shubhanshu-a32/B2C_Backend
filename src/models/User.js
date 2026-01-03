@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    mobile: { 
-        type: String, 
-        required: true,
-        unique: true 
+    mobile: {
+      type: String,
+      required: true,
+      unique: true
     },
-    role: { 
-        type: String,
-        enum: ["buyer", "seller"],
-        required: true
+    role: {
+      type: String,
+      enum: ["buyer", "seller", "delivery_partner"],
+      required: true
     },
     // FOR SELLER
     shopName: {
@@ -18,9 +18,9 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     ownerName: {
-        type: String,
-        default: ""
-    }, 
+      type: String,
+      default: ""
+    },
     // SELLER LOCATION
     address: {
       type: String,
@@ -37,8 +37,8 @@ const userSchema = new mongoose.Schema(
 
     // FOR BUYER
     fullName: {
-        type: String,
-        default: ""
+      type: String,
+      default: ""
     },
 
     // FOR EVERYONE (SELLER, BUYER)

@@ -17,11 +17,28 @@ const authenticate = async (req, res, next) => {
 
     try {
         const payload = jwt.verify(token, ACCESS_SECRET);
-        const user = await User.findById(payload.userId).select('-__v');
+
+        // Handle payload differences (id vs userId)
+        const userId = payload.userId || payload.id;
+        const role = payload.role;
+
+        let user = null;
+
+        if (role === 'admin') {
+            const Admin = require('../models/Admin');
+            user = await Admin.findById(userId).select('-password -__v');
+        } else {
+            user = await User.findById(userId).select('-__v');
+        }
+
         if (!user) {
-            console.log("Auth Middleware: User not found for ID:", payload.userId);
+            console.log("Auth Middleware: User/Admin not found for ID:", userId);
             return res.status(401).json({ message: 'Invalid token (user not found)' });
         }
+
+        // Ensure role is set on user object if not present (Admin model has default)
+        if (!user.role && role) user.role = role;
+
         req.user = user;
         next();
     } catch (err) {

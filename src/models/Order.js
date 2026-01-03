@@ -12,6 +12,11 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    deliveryPartner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
     items: [
       {
         product: {
@@ -26,6 +31,10 @@ const orderSchema = new mongoose.Schema(
     totalAmount: {
       type: Number,
       required: true,
+    },
+    shippingCharge: {
+      type: Number,
+      default: 0,
     },
     address: {
       fullAddress: String,

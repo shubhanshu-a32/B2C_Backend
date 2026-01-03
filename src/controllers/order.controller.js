@@ -3,6 +3,25 @@ const Product = require("../models/Product");
 const { paginate } = require("../utils/pagination");
 const { generateInvoice } = require('../utils/invoice');
 
+/* ---------------- SHIPPING LOGIC ---------------- */
+const calcShipping = (itemCount, total) => {
+  // 1. Single product
+  if (itemCount === 1) {
+    if (total > 2000) return 0; // Rule 4
+    if (total < 500) return 80; // Rule 1
+    return 100; // Rule 5 (500 <= total <= 2000)
+  }
+
+  // Multiple products
+  if (total > 2000) {
+    if (itemCount >= 5) return 0; // Rule 2
+    return 100; // Rule 3 (count < 5)
+  }
+
+  // Fallback for multiple items <= 2000
+  return 100;
+};
+
 /* ---------------- CREATE ORDER ---------------- */
 const createOrder = async (req, res) => {
   try {
@@ -52,11 +71,15 @@ const createOrder = async (req, res) => {
       });
     }
 
+    const shippingCharge = calcShipping(orderItems.length, totalAmount);
+    const finalTotal = totalAmount + shippingCharge;
+
     const order = await Order.create({
       buyer,
       sellerId: seller,
       items: orderItems,
-      totalAmount,
+      totalAmount: finalTotal,
+      shippingCharge,
       paymentMode,
       paymentStatus: paymentMode === "COD" ? "PENDING" : "PAID",
       orderStatus: "PLACED",
@@ -117,6 +140,32 @@ const listOrdersByUser = async (req, res) => {
   }
 };
 
+/* ---------------- GET ORDER STATS ---------------- */
+const getOrderStats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const stats = await Order.aggregate([
+      { $match: { buyer: userId } },
+      {
+        $group: {
+          _id: null,
+          totalOrders: { $sum: 1 },
+          totalSpent: { $sum: "$totalAmount" },
+        },
+      },
+    ]);
+
+    if (stats.length === 0) {
+      return res.json({ totalOrders: 0, totalSpent: 0 });
+    }
+
+    res.json(stats[0]);
+  } catch (err) {
+    console.error("getOrderStats error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 /* ---------------- UPDATE STATUS ---------------- */
 const updateOrderStatus = async (req, res) => {
   try {
@@ -154,4 +203,5 @@ module.exports = {
   listOrdersByUser,
   updateOrderStatus,
   downloadInvoice,
+  getOrderStats,
 };

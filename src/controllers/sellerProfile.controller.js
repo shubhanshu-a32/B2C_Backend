@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const SellerProfile = require("../models/SellerProfile");
 
 exports.getSellerProfile = async (req, res) => {
   try {
@@ -10,7 +11,17 @@ exports.getSellerProfile = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    res.json(user);
+    // Fetch additional details from SellerProfile model
+    const sellerProfile = await SellerProfile.findOne({ userId: req.user._id });
+
+    // Merge data
+    const responseData = {
+      ...user.toObject(),
+      pincode: sellerProfile?.pincode,
+      area: sellerProfile?.area
+    };
+
+    res.json(responseData);
   } catch (err) {
     console.error("getSellerProfile error:", err);
     res.status(500).json({ message: "Server error" });
@@ -19,7 +30,7 @@ exports.getSellerProfile = async (req, res) => {
 
 exports.updateSellerProfile = async (req, res) => {
   try {
-    const { shopName, ownerName, address, lat, lng } = req.body;
+    const { shopName, ownerName, address, lat, lng, pincode, area } = req.body;
 
     const user = await User.findById(req.user._id);
 
@@ -27,6 +38,7 @@ exports.updateSellerProfile = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
+    // Update User model (essential fields)
     user.shopName = shopName ?? user.shopName;
     user.ownerName = ownerName ?? user.ownerName;
     user.address = address ?? user.address;
@@ -35,7 +47,29 @@ exports.updateSellerProfile = async (req, res) => {
 
     await user.save();
 
-    res.json(user);
+    // Sync with SellerProfile model (for filtering)
+    // Upsert logic
+    await SellerProfile.findOneAndUpdate(
+      { userId: req.user._id },
+      {
+        userId: req.user._id,
+        shopName: user.shopName,
+        businessPhone: user.mobile,
+        address: user.address,
+        pincode: pincode ? Number(pincode) : undefined, // Ensure number
+        area: area
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    // Fetch updated merged profile to return
+    const updatedProfile = await SellerProfile.findOne({ userId: req.user._id });
+
+    res.json({
+      ...user.toObject(),
+      pincode: updatedProfile?.pincode,
+      area: updatedProfile?.area
+    });
   } catch (err) {
     console.error("updateSellerProfile error:", err);
     res.status(500).json({ message: "Server error" });

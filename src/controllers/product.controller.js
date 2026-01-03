@@ -19,6 +19,7 @@ const createProduct = async (req, res) => {
       description,
       price,
       stock = 0,
+      variant,
       category,
       subcategory,
       images = [],
@@ -80,6 +81,7 @@ const createProduct = async (req, res) => {
       description,
       price: Number(price),
       stock: Number(stock),
+      variant,
       category: categoryId,
       subcategory: subcategoryId,
       images,
@@ -233,6 +235,41 @@ const listProducts = async (req, res) => {
 
     // Exclude disabled products
     filter.status = { $ne: "DISABLED" };
+
+    // Location-based filtering
+    if (req.query.pincode || req.query.area) {
+      const SellerProfile = require("../models/SellerProfile");
+      const locationFilter = {};
+
+      // If pincode is provided, prioritize it for broader matching (e.g. all areas in 483501)
+      if (req.query.pincode) {
+        locationFilter.pincode = Number(req.query.pincode);
+      } else if (req.query.area) {
+        // Fallback to area search if no pincode
+        locationFilter.area = { $regex: req.query.area, $options: "i" };
+      }
+
+      // Find sellers matching the location
+      const matchingSellers = await SellerProfile.find(locationFilter).select("userId");
+      const sellerIds = matchingSellers.map(s => s.userId);
+
+      // If sellers are found, filter products by these sellers
+      if (sellerIds.length > 0) {
+        // If a seller filter was already applied, we need to find the intersection
+        if (filter.sellerId) {
+          // If the specifically requested seller is not in the location match, result is empty
+          if (!sellerIds.some(id => id.toString() === filter.sellerId.toString())) {
+            return res.json({ data: [], total: 0, limit, page, pages: 0 });
+          }
+          // Otherwise, filter.sellerId is already set to the specific seller, which is valid
+        } else {
+          filter.sellerId = { $in: sellerIds };
+        }
+      } else {
+        // If no sellers match the location, return empty result
+        return res.json({ data: [], total: 0, limit, page, pages: 0 });
+      }
+    }
 
     const query = Product.find(filter)
       .sort({ createdAt: -1 })

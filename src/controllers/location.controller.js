@@ -16,8 +16,8 @@ const addLocation = async (req, res) => {
     const { area, pincode, district, state } = req.body;
     if (!area || !pincode) return res.status(400).json({ message: "Area and Pincode are required" });
 
-    const existing = await KatniLocation.findOne({ pincode });
-    if (existing) return res.status(400).json({ message: "Pincode already exists" });
+    const existing = await KatniLocation.findOne({ area });
+    if (existing) return res.status(400).json({ message: "Area already exists" });
 
     const location = await KatniLocation.create({ area, pincode, district, state });
     res.status(201).json(location);

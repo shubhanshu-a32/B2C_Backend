@@ -130,6 +130,17 @@ const generateInvoice = (order, res) => {
 
     // --- Total ---
     y += 10;
+
+    const shipping = order.shippingCharge || 0;
+    const subtotal = order.totalAmount - shipping;
+
+    doc.font('Helvetica').fontSize(10);
+    doc.text(`Subtotal: ₹${subtotal}`, 300, y, { align: 'right', width: 265 });
+    y += 15;
+
+    doc.text(`Shipping: ₹${shipping}`, 300, y, { align: 'right', width: 265 });
+    y += 20;
+
     doc.font('Helvetica-Bold').fontSize(14);
     doc.text(`Total Amount: ₹${order.totalAmount}`, 300, y, { align: 'right', width: 265 });
 
