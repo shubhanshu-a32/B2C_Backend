@@ -118,6 +118,8 @@ const listOrdersByUser = async (req, res) => {
     const user = req.user;
     const { page = 1, limit = 10 } = req.query;
 
+    console.log("listOrdersByUser HIT. User:", user._id, "Role:", user.role);
+
     const filter =
       user.role === "buyer"
         ? { buyer: user._id }
@@ -136,6 +138,31 @@ const listOrdersByUser = async (req, res) => {
     res.json(result);
   } catch (err) {
     console.error("listOrders error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+/* ---------------- GET SELLER ORDERS (SECURE) ---------------- */
+const getOrdersBySeller = async (req, res) => {
+  try {
+    const sellerId = req.user._id;
+    const { page = 1, limit = 10 } = req.query;
+
+    console.log("getOrdersBySeller HIT. Seller:", sellerId);
+
+    const query = Order.find({ sellerId })
+      .sort({ createdAt: -1 })
+      .populate("items.product")
+      .populate("buyer", "fullName mobile email addresses");
+
+    const result = await paginate(query, {
+      page: Number(page),
+      limit: Number(limit),
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error("getOrdersBySeller error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -204,4 +231,5 @@ module.exports = {
   updateOrderStatus,
   downloadInvoice,
   getOrderStats,
+  getOrdersBySeller,
 };

@@ -6,10 +6,14 @@ const roleCheck = require('../middlewares/roleCheck');
 const upload = require('../middlewares/upload');
 const { uploadImages } = require('../controllers/product.controller');
 
+router.get('/seller/me', authenticate, roleCheck(['seller']), prodCtrl.getProductsBySeller);
+
 router.get('/', prodCtrl.listProducts);
 router.get('/:id', prodCtrl.getProduct);
 router.post('/:id/reviews', authenticate, roleCheck(['buyer']), prodCtrl.addProductReview);
 router.get('/:id/reviews', prodCtrl.getProductReviews);
+
+// Seller-only
 
 // Seller-only
 router.post('/', authenticate, roleCheck(['seller']), prodCtrl.createProduct);

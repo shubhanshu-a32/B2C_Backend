@@ -414,8 +414,25 @@ const createDeliveryPartner = async (req, res) => {
     if (!name || !mobile || !pincode) {
       return res.status(400).json({ message: "Name, Mobile and Pincode are required" });
     }
+
+    // Check for existing user with this mobile
     const existing = await User.findOne({ mobile });
-    if (existing) return res.status(400).json({ message: "Mobile already exists" });
+    if (existing) {
+      // Check if it's an "orphan" (Delivery Partner role, but no Profile)
+      // Or simply if it's a delivery_partner, check if profile exists.
+      if (existing.role === 'delivery_partner') {
+        const existingProfile = await DeliveryPartner.findOne({ userId: existing._id });
+        if (!existingProfile) {
+          // It's an orphan! Delete it to allow reuse.
+          await User.findByIdAndDelete(existing._id);
+          console.log(`[CreatePartner] Cleaned up orphan user for mobile ${mobile}`);
+        } else {
+          return res.status(400).json({ message: "Mobile number already exists" });
+        }
+      } else {
+        return res.status(400).json({ message: "Mobile number already exists (User is registered as ${existing.role})" });
+      }
+    }
 
     // 1. Create User
     const user = await User.create({
@@ -466,11 +483,75 @@ const getAllDeliveryPartners = async (req, res) => {
   }
 };
 
+const updateDeliveryPartner = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, mobile, pincode, status } = req.body;
+
+    // 1. Find Delivery Partner Profile
+    const profile = await DeliveryPartner.findById(id);
+    if (!profile) return res.status(404).json({ message: "Delivery partner profile not found" });
+
+    // 2. Find Associated User
+    const user = await User.findById(profile.userId);
+    if (!user) return res.status(404).json({ message: "Associated user not found" });
+
+    // 3. Update Fields
+    if (name) {
+      profile.fullName = name;
+      user.fullName = name;
+    }
+    if (pincode) {
+      profile.pincode = pincode;
+    }
+    if (status) {
+      profile.status = status;
+    }
+
+    // 4. Handle Mobile Update (Unique Check)
+    if (mobile && mobile !== user.mobile) {
+      const existing = await User.findOne({ mobile });
+      if (existing) {
+        // ORPHAN CHECK: If user exists but is an orphan delivery partner (no profile), clean up.
+        if (existing.role === 'delivery_partner') {
+          const existingProfile = await DeliveryPartner.findOne({ userId: existing._id });
+          if (!existingProfile) {
+            // Clean orphan
+            await User.findByIdAndDelete(existing._id);
+            console.log(`[UpdatePartner] Cleaned up orphan user for mobile ${mobile}`);
+          } else {
+            return res.status(400).json({ message: "Mobile number already exists" });
+          }
+        } else {
+          return res.status(400).json({ message: "Mobile number already exists" });
+        }
+      }
+
+      profile.mobile = mobile;
+      user.mobile = mobile;
+    }
+
+    await user.save();
+    await profile.save();
+
+    res.json({ message: "Delivery partner updated", profile, user });
+  } catch (err) {
+    console.error("Update Delivery Partner Error:", err);
+    res.status(500).json({ message: "Failed to update delivery partner" });
+  }
+};
+
 const deleteDeliveryPartner = async (req, res) => {
   try {
     const { id } = req.params;
+    const profile = await DeliveryPartner.findById(id);
+    if (!profile) return res.status(404).json({ message: "Delivery partner not found" });
+
+    // Delete associated user FIRST using the userId from profile
+    await User.findByIdAndDelete(profile.userId);
+    // Then delete profile
     await DeliveryPartner.findByIdAndDelete(id);
-    await User.findByIdAndDelete(id);
+
     res.json({ message: "Delivery partner deleted" });
   } catch (err) {
     console.error(err);
@@ -518,10 +599,34 @@ const assignOrderToPartner = async (req, res) => {
     }
 
     const order = await Order.findById(id)
-      .populate("sellerId", "ownerName shopName mobile address")
+      .populate("sellerId", "ownerName shopName mobile address lat lng")
       .populate("buyer", "fullName mobile");
 
     if (!order) return res.status(404).json({ message: "Order not found" });
+
+    // --- PINCODE VALIDATION ---
+    // Fetch Seller Profile to get pincode
+    const sellerProfile = await SellerProfile.findOne({ userId: order.sellerId._id });
+    if (!sellerProfile || !sellerProfile.pincode) {
+      return res.status(400).json({ message: "Seller pincode not found. Cannot validate delivery area." });
+    }
+
+    // Fetch Delivery Partner Profile to get pincode
+    const partnerProfile = await DeliveryPartner.findOne({ userId: partnerId });
+    if (!partnerProfile || !partnerProfile.pincode) {
+      return res.status(400).json({ message: "Delivery partner pincode not found." });
+    }
+
+    // Compare Pincodes (Ensure types match)
+    const sellerPincode = String(sellerProfile.pincode).trim();
+    const partnerPincode = String(partnerProfile.pincode).trim();
+
+    if (sellerPincode !== partnerPincode) {
+      return res.status(400).json({
+        message: `Pincode mismatch! Seller is in ${sellerPincode}, but Partner is in ${partnerPincode}.`
+      });
+    }
+    // --------------------------
 
     // Update Order
     order.deliveryPartner = partnerId;
@@ -530,7 +635,14 @@ const assignOrderToPartner = async (req, res) => {
 
     // 1. Notify Delivery Partner via WhatsApp
     // Message: "Pickup from [Seller Address], Deliver to [Buyer Address]"
-    const pickupMsg = `Hello ${partner.fullName},\nNew Order Assigned!\n\nPICKUP FROM:\nShop: ${order.sellerId.shopName}\nMobile: ${order.sellerId.mobile}\nAddress: ${order.sellerId.address || "Address not set"}\n\nDELIVER TO:\nBuyer: ${order.buyer.fullName}\nMobile: ${order.buyer.mobile}\nAddress: ${order.address?.fullAddress || "Address not provided"}\n\nPlease proceed immediately.`;
+
+    // Construct Map Link if coordinates exist
+    let mapLink = "";
+    if (order.sellerId.lat && order.sellerId.lng) {
+      mapLink = `\nMap: https://www.google.com/maps?q=${order.sellerId.lat},${order.sellerId.lng}`;
+    }
+
+    const pickupMsg = `Hello ${partner.fullName},\nNew Order Assigned!\n\nPICKUP FROM:\nShop: ${order.sellerId.shopName}\nMobile: ${order.sellerId.mobile}\nAddress: ${order.sellerId.address || "Address not set"}${mapLink}\n\nDELIVER TO:\nBuyer: ${order.buyer.fullName}\nMobile: ${order.buyer.mobile}\nAddress: ${order.address?.fullAddress || "Address not provided"}\n\nPlease proceed immediately.`;
 
     await sendWhatsappMessage(partner.mobile, pickupMsg);
 
@@ -669,6 +781,7 @@ module.exports = {
   getAllOrders,
   createDeliveryPartner,
   getAllDeliveryPartners,
+  updateDeliveryPartner,
   assignOrderToPartner,
   updateOrderStatus,
   updateOrder,

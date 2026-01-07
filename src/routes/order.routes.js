@@ -7,6 +7,7 @@ const Order = require('../models/Order');
 
 
 router.post('/', authenticate, roleCheck(['buyer']), orderCtrl.createOrder);
+router.get('/seller/me', authenticate, roleCheck(['seller']), orderCtrl.getOrdersBySeller);
 router.get('/', authenticate, orderCtrl.listOrdersByUser);
 router.get('/stats', authenticate, roleCheck(['buyer']), orderCtrl.getOrderStats);
 router.put('/:id', authenticate, orderCtrl.updateOrderStatus);

@@ -179,6 +179,24 @@ const getProduct = async (req, res) => {
   }
 };
 
+/* ---------------- GET SELLER PRODUCTS (SECURE) ---------------- */
+const getProductsBySeller = async (req, res) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const sellerId = req.user._id;
+
+    const query = { sellerId };
+    const sort = { createdAt: -1 };
+
+    const data = await paginate(Product.find(query).sort(sort), { page, limit });
+    res.json(data);
+  } catch (err) {
+    console.error("getProductsBySeller error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 /* ---------------- LIST PRODUCTS (SHOP) ---------------- */
 const listProducts = async (req, res) => {
   try {
@@ -354,6 +372,7 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProduct,
+  getProductsBySeller,
   listProducts,
   addProductReview,
   getProductReviews,

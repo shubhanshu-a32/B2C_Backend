@@ -29,6 +29,7 @@ router.delete("/orders/:id", adminAuth, adminCtrl.deleteOrder);
 // DELIVERY PARTNERS
 router.post("/delivery-partners", adminAuth, adminCtrl.createDeliveryPartner);
 router.get("/delivery-partners", adminAuth, adminCtrl.getAllDeliveryPartners);
+router.put("/delivery-partners/:id", adminAuth, adminCtrl.updateDeliveryPartner);
 router.delete("/delivery-partners/:id", adminAuth, adminCtrl.deleteDeliveryPartner);
 
 // CATEGORIES
