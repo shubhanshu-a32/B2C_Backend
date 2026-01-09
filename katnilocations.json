@@ -1,0 +1,640 @@
+[{
+  "_id": {
+    "$oid": "695777125165437ef0085a95"
+  },
+  "area": "Ghantaghar",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.664Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.664Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085a97"
+  },
+  "area": "Nehru Market",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.674Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.674Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085a99"
+  },
+  "area": "Gole Bazar",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.681Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.681Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085a9b"
+  },
+  "area": "Subhash Chowk",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.694Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.694Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085a9d"
+  },
+  "area": "Juniani",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.699Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.699Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085a9f"
+  },
+  "area": "Barahi",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.706Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.706Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aa1"
+  },
+  "area": "Bhatta Mohalla",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.712Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.712Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aa3"
+  },
+  "area": "Purani Basti",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.720Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.720Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aa5"
+  },
+  "area": "Civil Lines",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.730Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.730Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aa7"
+  },
+  "area": "Bus Stand Area",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.740Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.740Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aa9"
+  },
+  "area": "Katangi Road",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.751Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aab"
+  },
+  "area": "Railway Station Area",
+  "pincode": 483501,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.762Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.762Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aad"
+  },
+  "area": "Katni Junction",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.775Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.775Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085aaf"
+  },
+  "area": "Madan Mahal",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.780Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.780Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ab1"
+  },
+  "area": "Tilak Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.784Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ab3"
+  },
+  "area": "Jawahar Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.793Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.793Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ab5"
+  },
+  "area": "Gandhi Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.799Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.799Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ab7"
+  },
+  "area": "Indira Colony",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.804Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.804Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ab9"
+  },
+  "area": "Shivaji Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.808Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.808Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085abb"
+  },
+  "area": "Madhav Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.813Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.813Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085abd"
+  },
+  "area": "Saraswati Nagar",
+  "pincode": 483504,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.820Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.820Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085abf"
+  },
+  "area": "New Katni",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.825Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.825Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ac1"
+  },
+  "area": "Vijay Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.832Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.832Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ac3"
+  },
+  "area": "Palasia",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.836Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.836Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ac5"
+  },
+  "area": "Shanti Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.843Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.843Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ac7"
+  },
+  "area": "Durga Colony",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.847Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.847Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ac9"
+  },
+  "area": "Ram Manohar Lohia Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.850Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.850Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085acb"
+  },
+  "area": "Krishna Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.853Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.853Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085acd"
+  },
+  "area": "Sanjay Gandhi Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.855Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.855Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085acf"
+  },
+  "area": "Azad Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.858Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.858Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ad1"
+  },
+  "area": "Vivekanand Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.861Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.861Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ad3"
+  },
+  "area": "Patel Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.864Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.864Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ad5"
+  },
+  "area": "Rani Durgavati Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.867Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.867Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ad7"
+  },
+  "area": "Laxmi Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.870Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.870Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ad9"
+  },
+  "area": "Ambedkar Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.874Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.874Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085adb"
+  },
+  "area": "New Ram Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.880Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.880Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085add"
+  },
+  "area": "Hanuman Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.884Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.884Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085adf"
+  },
+  "area": "Gayatri Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.886Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ae1"
+  },
+  "area": "Balaji Nagar",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.889Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.889Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695777125165437ef0085ae3"
+  },
+  "area": "Nayagaon",
+  "pincode": 483503,
+  "district": "Katni",
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2026-01-02T07:43:14.891Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-02T07:43:14.891Z"
+  },
+  "__v": 0
+}]

@@ -639,13 +639,74 @@ const assignOrderToPartner = async (req, res) => {
     // 1. Notify Delivery Partner via WhatsApp
     // Message: "Pickup from [Seller Address], Deliver to [Buyer Address]"
 
-    // Construct Map Link if coordinates exist
+    // Determine Seller Mobile with defensive check
+    let sellerMobileDisplay = "N/A";
+    if (sellerProfile && sellerProfile.businessPhone) sellerMobileDisplay = sellerProfile.businessPhone;
+    else if (sellerProfile && sellerProfile.whatsappNumber) sellerMobileDisplay = sellerProfile.whatsappNumber;
+    else if (order.sellerId && order.sellerId.mobile) sellerMobileDisplay = order.sellerId.mobile;
+
+    // Determine Seller Address with defensive check
+    let sellerAddressDisplay = "Address not set";
+    if (order.sellerId && order.sellerId.address) sellerAddressDisplay = order.sellerId.address;
+    else if (sellerProfile && sellerProfile.address) sellerAddressDisplay = sellerProfile.address;
+
+    // Construct Map Link
     let mapLink = "";
-    if (order.sellerId.lat && order.sellerId.lng) {
-      mapLink = `\nMap: https://www.google.com/maps?q=${order.sellerId.lat},${order.sellerId.lng}`;
+    if (order.sellerId && order.sellerId.lat && order.sellerId.lng) {
+      mapLink = ` https://www.google.com/maps?q=${order.sellerId.lat},${order.sellerId.lng}`;
+    } else if (order.sellerId.address || (sellerProfile && sellerProfile.address)) {
+      const addrForMap = order.sellerId.address || sellerProfile.address;
+      if (addrForMap) {
+        mapLink = ` https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addrForMap)}`;
+      }
     }
 
-    const pickupMsg = `Hello ${partner.fullName},\nNew Order Assigned!\n\nPICKUP FROM:\nShop: ${order.sellerId.shopName}\nMobile: ${order.sellerId.mobile}\nAddress: ${order.sellerId.address || "Address not set"}${mapLink}\n\nDELIVER TO:\nBuyer: ${order.buyer.fullName}\nMobile: ${order.buyer.mobile}\nAddress: ${order.address?.fullAddress || "Address not provided"}\n\nPlease proceed immediately.`;
+    // Format Buyer Address with safe checks and cleaning
+    let buyerAddressStr = "Address not provided";
+    if (order.address) {
+      // Helper to clean a string of "undefined" or "null"
+      const cleanStr = (s) => {
+        if (!s) return "";
+        return String(s)
+          .replace(/\bundefined\b/gi, "")
+          .replace(/\bnull\b/gi, "")
+          .trim();
+      };
+
+      // 1. Try to use explicit fields if available and look good
+      const city = cleanStr(order.address.city);
+      const state = cleanStr(order.address.state);
+      const pincode = cleanStr(order.address.pincode);
+      let fullAddr = cleanStr(order.address.fullAddress);
+
+      // If fullAddress contains the garbage pattern "undefined, undefined", clean it specifically
+      // Fix likely patterns like "Street, undefined, undefined - Pincode"
+      fullAddr = fullAddr
+        .replace(/,\s*,/g, ",") // Remove double commas
+        .replace(/,\s*-/g, " -") // Clean comma before hyphens
+        .replace(/^,\s*/, "") // Remove leading comma
+        .replace(/,\s*$/, ""); // Remove trailing comma
+
+      // Use the cleaned fullAddress if it has content
+      if (fullAddr && fullAddr.length > 5) { // Simple sanity check for length
+        buyerAddressStr = fullAddr;
+      } else {
+        // Fallback: Construct from parts if fullAddress is garbage or empty
+        // Note: Schema might not have 'addressLine' distinct from 'fullAddress' depending on how it was saved.
+        // But we can try to use what we have.
+        const parts = [fullAddr, city, pincode].filter(p => p);
+        if (parts.length > 0) buyerAddressStr = parts.join(", ");
+      }
+
+      // Final cleanup of the result just in case
+      buyerAddressStr = buyerAddressStr
+        .replace(/\bundefined\b/gi, "")
+        .replace(/,\s*,/g, ",")
+        .replace(/\s\s+/g, " ")
+        .trim();
+    }
+
+    const pickupMsg = `Hello ${partner.fullName},\nNew Order Assigned!\n\nPICKUP FROM:\nShop: ${order.sellerId.shopName}\nMobile: ${sellerMobileDisplay}\nAddress: ${sellerAddressDisplay}${mapLink}\n\nDELIVER TO:\nBuyer: ${order.buyer.fullName}\nMobile: ${order.buyer.mobile}\nAddress: ${buyerAddressStr}\n\nPlease proceed immediately.`;
 
     await sendWhatsappMessage(partner.mobile, pickupMsg);
 
@@ -659,20 +720,6 @@ const assignOrderToPartner = async (req, res) => {
         return `${item.quantity} x ${title}`;
       })
       .join(", ");
-
-    // Format Buyer Address with safe checks
-    let buyerAddressStr = "Address not provided";
-    if (order.address) {
-      const parts = [
-        order.address.fullAddress,
-        order.address.city,
-        order.address.pincode
-      ].filter(part => part); // Filter out null/undefined/empty strings
-
-      if (parts.length > 0) {
-        buyerAddressStr = parts.join(", ");
-      }
-    }
 
     const sellerMsg = `Delivery boy "${partner.fullName}" coming to your address for the order "${orderDetails}" and it will deliver to "${order.buyer.fullName}, ${buyerAddressStr}".`;
 

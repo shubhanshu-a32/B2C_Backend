@@ -96,7 +96,23 @@ exports.getPublicSellerProfile = async (req, res) => {
 
 exports.getAllSellers = async (req, res) => {
   try {
-    const sellers = await User.find({ role: "seller" })
+    const { pincode } = req.query;
+    let filter = { role: "seller" };
+
+    if (pincode) {
+      // Find seller profiles with this pincode
+      const profiles = await SellerProfile.find({ pincode: Number(pincode) }).select("userId");
+      const userIds = profiles.map(p => p.userId);
+
+      // If no sellers found in this pincode, return empty
+      if (userIds.length === 0) {
+        return res.json([]);
+      }
+
+      filter._id = { $in: userIds };
+    }
+
+    const sellers = await User.find(filter)
       .select("shopName ownerName _id address")
       .limit(10); // Limit to popular/recent 10 for now
 
